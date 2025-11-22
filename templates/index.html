@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>☁️ Cloud Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 24px;
+            text-align: center;
+            border: 2px dashed #e0e7ff;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        input[type="file"]:hover+.file-input-label,
+        .file-input-wrapper:hover .file-input-label {
+            border-color: #667eea;
+            background: #eef2ff;
+            color: #667eea;
+        }
+
+        input[type="file"]:active+.file-input-label {
+            border-color: #764ba2;
+            background: #f3e8ff;
+        }
+
+        input[type="submit"] {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 8px 0;
+        }
+
+        a {
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            padding: 12px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        a:hover {
+            background: #eef2ff;
+            color: #764ba2;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 32px 24px;
+            }
+
+            .file-input-label {
+                padding: 20px;
+                font-size: 0.95rem;
+            }
+
+            input[type="submit"] {
+                padding: 12px 24px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>☁️ Upload Your File</h1>
+        <p class="subtitle">Securely upload your files to the cloud</p>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" name="file" id="fileInput">
+                <label for="fileInput" class="file-input-label">
+                    Choose File or Drag & Drop Here
+                </label>
+            </div>
+
+            <input type="submit" value="Upload File">
+        </form>
+
+        <div class="divider"></div>
+        <a href="/files">📁 View Uploaded Files</a>
+    </div>
+</body>
+
+</html>
