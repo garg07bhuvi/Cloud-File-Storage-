@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📁 Uploaded Files</title>
     <style>
         * {
@@ -29,10 +31,21 @@
             text-align: center;
             color: white;
             font-size: 2.5rem;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
+
+        .flash-messages {
+            list-style: none;
+            background: white;
+            color: #334155;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -60,10 +73,7 @@
             border-bottom: 1px solid #e2e8f0;
             color: #334155;
             font-size: 0.95rem;
-        }
-
-        tbody tr {
-            transition: all 0.3s ease;
+            word-break: break-all;
         }
 
         tbody tr:hover {
@@ -74,16 +84,26 @@
             border-bottom: none;
         }
 
-        a {
+        .empty {
+            text-align: center;
+            color: #64748b;
+            padding: 32px;
+        }
+
+        .actions {
+            white-space: nowrap;
+        }
+
+        .actions a {
             text-decoration: none;
             color: #667eea;
             font-weight: 600;
-            transition: all 0.3s ease;
             padding: 4px 8px;
             border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
-        a:hover {
+        .actions a:hover {
             color: #764ba2;
             background: #eef2ff;
         }
@@ -93,12 +113,31 @@
             margin: 0 8px;
         }
 
+        .actions form {
+            display: inline;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #fecaca;
+        }
+
         .back-link {
-            display: inline-block;
+            display: block;
             margin-top: 32px;
             padding: 12px 24px;
             text-align: center;
-            width: 100%;
+            text-decoration: none;
             background: white;
             color: #667eea;
             border-radius: 12px;
@@ -110,14 +149,12 @@
         .back-link:hover {
             background: #f8fafc;
             color: #764ba2;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
         }
 
         @media (max-width: 600px) {
             h1 {
                 font-size: 2rem;
-                margin-bottom: 30px;
             }
 
             table {
@@ -127,11 +164,6 @@
             th,
             td {
                 padding: 14px 12px;
-            }
-
-            a {
-                padding: 3px 6px;
-                font-size: 0.9rem;
             }
 
             .actions-separator {
@@ -144,6 +176,17 @@
 <body>
     <div class="container">
         <h1>📂 Cloud Storage Dashboard</h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
         <table>
             <thead>
                 <tr>
@@ -159,16 +202,24 @@
                     <td>{{ file.name }}</td>
                     <td>{{ file.size }}</td>
                     <td>{{ file.time }}</td>
-                    <td>
-                        <a href="/download/{{ file.name }}">⬇️ Download</a>
+                    <td class="actions">
+                        <a href="{{ url_for('download_file', filename=file.name) }}">⬇️ Download</a>
                         <span class="actions-separator">|</span>
-                        <a href="/delete/{{ file.name }}" onclick="return confirm('Delete this file?')">🗑️ Delete</a>
+                        <form action="{{ url_for('delete_file', filename=file.name) }}" method="POST"
+                            onsubmit="return confirm('Delete this file?');">
+                            <button type="submit">🗑️ Delete</button>
+                        </form>
                     </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="empty">No files uploaded yet.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="/" class="back-link">⬅️ Back to Upload Page</a>
+
+        <a href="{{ url_for('home') }}" class="back-link">⬅️ Back to Upload Page</a>
     </div>
 </body>
 
